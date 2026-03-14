@@ -86,3 +86,10 @@ class ROSkid(Node):
 - DAF
 - Pond
 - Finished water storage
+
+
+## Recycle
+
+1. Detect a recycle stream
+2. Add stream to array of recycle streams
+3. Run iterative solver on recycle streams until convergence
