@@ -1,10 +1,8 @@
-from .stream import Stream
-import os
+#from .stream import Stream
+from utils import *
 
-def draw_line():
-    try: columns = os.get_terminal_size().columns
-    except OSError:columns = 80 
-    print("-" * columns)
+
+
 
 
 class Node():
@@ -29,8 +27,8 @@ class Node():
             for key, value in params.items():
                 print(f"  {key}: {value}")
 
-        def get_parameters(self):
-            return {}
+    def get_parameters(self):
+        return {}
 
 
 
@@ -38,4 +36,3 @@ class Node():
 
 
 
-        

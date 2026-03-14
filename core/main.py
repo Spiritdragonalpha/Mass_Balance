@@ -1,9 +1,8 @@
-from classes import Node, Stream, Plant, draw_line
-import classes.equipment as eq
+from classes import Node, Stream, Plant
+from classes.equipment import *
 
 
-
-def main():
+def Test1():
     Haile = Plant('Haile')
     
     Clarifier1 = eq.Clarifier('Clarifier1', wasting_ratio=0.1)
@@ -25,6 +24,21 @@ def main():
     Clarifier1.view_node()
     RO1.view_node()
 
+
+def Test2():
+    RedDog = Plant('RedDog')
+    Rack1 = MF('Rack1')
+    feed = Stream('Feed', flow=1000)
+
+    RedDog.nodes['Rack1'] = Rack1
+    Rack1.inputs['feed'] = feed
+
+    Rack1.view_node()
+
+
+def main():
+    
+    Test2()
 
 
 
