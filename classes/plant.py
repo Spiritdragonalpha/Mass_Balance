@@ -1,3 +1,6 @@
+from .node import Node
+from .stream import Stream
+
 class Plant():
     def __init__(self,name):
         self.name = name
