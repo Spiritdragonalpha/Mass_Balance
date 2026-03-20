@@ -19,11 +19,11 @@ class Clarifier (Node):
         }
 
     def solve(self):
-        feed = sum(stream.flow for stream in self.inputs.values() if stream is not None)
+        feedflow = sum(stream.flow for stream in self.inputs.values() if stream is not None)
         effluent = self.outputs['effluent']
         sludge = self.outputs['sludge']
 
-        sludge.flow = feed * self.wasting_ratio
-        effluent.flow = feed - sludge.flow
+        sludge.flow = feedflow * self.wasting_ratio
+        effluent.flow = feedflow - sludge.flow
 
     

@@ -6,13 +6,14 @@ The purpose of this code is to create a mass balance tool capable of giving flow
 
 - The mass balance will be composed of various nodes, each with input(s) and output(s)
 - Each node will be a piece of equipment
-
   - MF rack, RO skid, clarifier etc.
 - The program should be able to easily add/remove nodes and be flexible enough to create new types of nodes for new projects
 - The data should be displayed cleanly
 - Each data point should have the option to see the formula of how that number was calculated
 - Needs a way to "work backwards" from a desired output to find the necessary input
 - Include a way to show in Excel
+- Nodes only take in input stream flows, calc internal variables, and output stream flows
+- Streams are a data container
 
 
 
@@ -57,6 +58,11 @@ The purpose of this code is to create a mass balance tool capable of giving flow
 -Export data to Excel
 -Overspecify vs underspecify system
 -Display formulas for data points
+-fsolve function
+-fsolve multiple variables
+-pytests
+-Include instantaneous vs average auto calculated
+
 
 ### Recycle
 

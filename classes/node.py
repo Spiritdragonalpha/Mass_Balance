@@ -1,10 +1,6 @@
 #from .stream import Stream
 from utils import *
 
-
-
-
-
 class Node():
     def __init__(self,name):
         self.name = name
@@ -12,7 +8,7 @@ class Node():
         self.outputs = []
 
 
-    def view_node(self):
+    def view_node(self,show_all=False):
         draw_line()
         print(f"Node: {self.name}")
         print("Input Streams:")
@@ -21,11 +17,14 @@ class Node():
         print("Output Streams:")
         for key, stream in self.outputs.items():
             print(f"  {key}: {stream.flow} gpm")
-        params = self.get_parameters()
-        if params:
-            print("Parameters:")
-            for key, value in params.items():
-                print(f"  {key}: {value}")
+        if show_all:
+            params = self.get_parameters()
+            if params:
+                print("Parameters:")
+                for key, value in params.items():
+                    if value:
+                        print(f"  {key}: {value}")
+                    else: print(f"  {key}: {value}")
 
     def get_parameters(self):
         return {}

@@ -1,47 +1,49 @@
-from classes import Node, Stream, Plant
+from classes import Stream, Plant
 from classes.equipment import *
 
 
-def Test1():
+def Test1(recycle_test):
     Haile = Plant('Haile')
     
-    Clarifier1 = eq.Clarifier('Clarifier1', wasting_ratio=0.1)
-    RO1 = eq.RO('RO1', recovery=0.8)
+    Clarifier1 = Clarifier('Clarifier1', wasting_ratio=0.25)
+    MF1 = MF('MF1', XR_percentage=0.25)
+    RO1 = RO('RO1', recovery=0.75)
 
     Haile.nodes['Clarifier1'] = Clarifier1
+    Haile.nodes['MF1'] = MF1
     Haile.nodes['RO1'] = RO1
 
-    Main_Feed = Stream('Feed', flow=1000)
+    wtp_feed = Stream('Feed', flow=640)
 
-    Clarifier1.inputs['feed'] = Main_Feed
-    Clarifier1.inputs['recycle'] = Clarifier1.outputs['sludge']
-    Clarifier1.outputs['sludge'].destination = Clarifier1
-    RO1.inputs['feed'] = Clarifier1.outputs['effluent']
+    Clarifier1.inputs['feed'] = wtp_feed
+    if recycle_test == 1:
+        Clarifier1.inputs['sludge_recycle'] = Clarifier1.outputs['sludge']
+        Clarifier1.outputs['sludge'].destination = Clarifier1 #primitive logic to create recycle
+    if recycle_test == 2:
+        MF1.inputs['xr_recycle'] = MF1.outputs['XR']
+        MF1.outputs['XR'].destination = MF1
+
+    MF1.inputs['feed'] = Clarifier1.outputs['effluent']
+    RO1.inputs['feed'] = MF1.outputs['filtrate']
+
 
     
     Haile.solve_plant()
 
-    Clarifier1.view_node()
-    RO1.view_node()
+    Haile.view_plant(show_all=True)
+    #print(Haile.find_variable(var='Clarifier1.inputs.feed.flow', target='RO1.outputs.permeate.flow', target_value=500, guess=1000))
+    #Haile.view_plant()
 
-
-def Test2():
-    RedDog = Plant('RedDog')
-    Rack1 = MF('Rack1')
-    feed = Stream('Feed', flow=1000)
-
-    RedDog.nodes['Rack1'] = Rack1
-    Rack1.inputs['feed'] = feed
-
-    Rack1.view_node()
-
+    print(RO1.outputs['permeate'].flow,
+            RO1.outputs['concentrate'].flow,
+            MF1.outputs['filtrate'].flow,
+            MF1.outputs['XR'].flow,
+            Clarifier1.outputs['effluent'].flow,
+            Clarifier1.outputs['sludge'].flow)
 
 def main():
     
-    Test2()
-
-
-
+    Test1(False)
 
 
 if __name__ == "__main__":
