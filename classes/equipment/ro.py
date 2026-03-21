@@ -3,13 +3,10 @@ from classes import Node, Stream
 class RO(Node):
     def __init__(self,name,recovery):
         super().__init__(name)
-        self.inputs = {
-            'feed':None
-            }
-        self.outputs = {
-            'permeate': Stream(f'{name}_permeate'),
-            'concentrate': Stream(f'{name}_concentrate')
-            }
+        self.add_input('feed')
+        self.add_output('permeate')
+        self.add_output('concentrate')
+
         self.recovery = recovery
 
     def get_parameters(self):
@@ -18,12 +15,12 @@ class RO(Node):
         }
 
     def solve(self):
-        feed = self.inputs['feed']
-        permeate = self.outputs['permeate']
-        concentrate = self.outputs['concentrate']
+        feed = sum(stream.flow for stream in self.inputs.values() if stream is not None)
+        permeate = feed*self.recovery
+        concentrate = feed-permeate
         
-        permeate.flow = feed.flow * self.recovery
-        concentrate.flow = feed.flow - permeate.flow
+        self.outputs['permeate'] = permeate
+        self.outputs['concentrate'] = concentrate
 
 
 

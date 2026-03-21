@@ -1,4 +1,4 @@
-from classes import Node, Stream
+from classes import Node
 from utils import *
 
 
@@ -18,14 +18,9 @@ class MF(Node):
         super().__init__(name)
         
         #Define input and output streams
-        self.inputs = {
-            'feed':None
-            }
-        
-        self.outputs = {
-            'filtrate': Stream(f'{name}_filtrate'),
-            'XR': Stream(f'{name}_xr')
-            }
+        self.add_input('feed')
+        self.add_output('xr')
+        self.add_output('filtrate')
 
         # ---User-defined parameters---
         self.XR_percentage = XR_percentage
@@ -45,19 +40,27 @@ class MF(Node):
        
 
     def solve(self):
-        feedflow = sum(stream.flow for stream in self.inputs.values() if stream is not None)
-        filtrate = self.outputs['filtrate']
-        XR = self.outputs['XR']
+        feed = sum(stream.flow for stream in self.inputs.values() if stream is not None)
+        XR_flow = feed * self.XR_percentage
+        filtrate_flow = feed - XR_flow
 
-        XR.flow = feedflow * self.XR_percentage
-        filtrate.flow = feedflow - XR.flow
-        return
+        self.outputs['filtrate'] = filtrate_flow
+        self.outputs['xr'] = XR_flow
 
    
 
     def get_parameters(self):
       return {
             'XR_percentage': self.XR_percentage,}
+
+
+
+
+
+
+
+
+
 
 
 

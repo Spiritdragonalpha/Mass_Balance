@@ -6,10 +6,8 @@ class Stream():
         self.source = source
         self.destination = destination
         self.is_recycle = False
-
-    def connect(self,source,destination):
-        self.source = source
-        self.destination = destination
+    def __repr__(self):
+        return f"<Stream {self.source}.{self.name} (Flow: {self.flow})(Destination: {self.destination})>"
 
 
 

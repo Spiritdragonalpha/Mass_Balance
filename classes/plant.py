@@ -8,29 +8,23 @@ class Plant():
         self.list_recycle_streams = []
         self.solved_nodes = set()
 
-    def __getattr__(self, name):
-        if name in self.nodes:
-            return self.nodes[name]
-        raise AttributeError(f"{name} not found")
+    def __repr__(self):
+        return f"<Plant {self.name}>"
+
+    def add_node(self,node):
+        self.nodes[node.name] = node
+        return node
+
+    def add_stream(self,stream):
+        self.streams[stream.name] = stream
+        return stream
 
 
     def assign_streams(self):
         for node in self.nodes:
             for stream in self.streams:
                 if stream.destination == node.name:
-                    node.inputs[stream.name] = stream
-
-
-    def solve_plant(self):
-        list_recycle_streams = self.check_recycle_streams()
-        self.solve_once()
-        #print(f'Solving...')
-        #print(f'solve_plant: Found {len(list_recycle_streams)} recycle stream(s)')
-        for stream in list_recycle_streams:
-            print(f'solve_plant: Recycle Stream: {stream.name} from {stream.source.name} to {stream.destination.name}')
-            if list_recycle_streams:
-                self.solve_recycles(list_recycle_streams)
-            
+                    node.inputs[stream.name] = stream            
 
 
     def check_recycle_streams(self):
@@ -45,14 +39,29 @@ class Plant():
         return self.list_recycle_streams
 
 
-    def solve_once(self):
-        for node in self.nodes.values():
-            if all(stream is not None and stream.flow is not None for stream in node.inputs.values()):
-                node.solve()
-                print(f"solve_once: Solved node {node.name}")
-            else:
-                return
-                #print(f"solve_once: Skipping node {node.name}, inputs not ready")
+    def solve_plant(self, max_iter=100):
+        for i in range(max_iter):
+            progress = False
+
+            for node in self.nodes.values():
+                if node in self.solved_nodes:
+                    continue
+
+                if all(
+                    port.connected_stream is not None and port.connected_stream.flow is not None
+                    for port in node.inputs.values()
+                ):
+                    node.solve()
+                    self.solved_nodes.add(node)
+                    progress = True
+                    print(f"solve_plant: Solved node {node.name}")
+
+            if not progress:
+                print("solve_plant: No further progress possible")
+                break
+
+        else:
+            print("solve_plant: Reached max iterations")
 
     def solve_recycles(self, list_recycle_streams, tolerance=1e-6):
         print(f'solve_recycles: Solving plant with {len(list_recycle_streams)} recycle stream(s)')
@@ -79,7 +88,7 @@ class Plant():
         raise RuntimeError("Recycle solver did not converge")
 
 
-    def view_plant(self,show_all=False):
+    def view(self,show_all=False):
         print(f"Plant: {self.name}")
         print("Nodes:")
         for node in self.nodes.values():

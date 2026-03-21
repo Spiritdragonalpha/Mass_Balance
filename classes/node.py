@@ -1,4 +1,4 @@
-#from .stream import Stream
+from .port import Port
 from utils import *
 
 class Node():
@@ -7,12 +7,20 @@ class Node():
         self.inputs = {}
         self.outputs = {}
 
-    def __getattr__(self, name):
-        if name in self.inputs:
-            return self.inputs[name]
-        if name in self.outputs:
-            return self.outputs[name]
-        raise AttributeError(f"{name} not found in inputs or outputs of {self.name}")
+    def __repr__(self):
+        return f"<Node {self.name}>"
+
+    def add_input(self,name):
+        port = Port(self,name,'input')
+        setattr(self,name,port)
+        self.inputs[name] = port
+        return port
+
+    def add_output(self,name):
+        port = Port(self,name,'output')
+        setattr(self,name,port)
+        self.outputs[name] = port
+        return port
 
     def get_parameters(self):
         return {}
@@ -35,7 +43,7 @@ class Node():
                         print(f"  {key}: {value}")
                     else: print(f"  {key}: {value}")
 
-
+    
 
 
 
