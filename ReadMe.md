@@ -61,14 +61,14 @@ Mass_Balance/                               #Main directory
 
 ### Miscellaneous
 
--Import data from Excel
--Export data to Excel
--Overspecify vs underspecify system
--Display formulas for data points
--fsolve function
--fsolve multiple variables
+- Import data from Excel
+- Export data to Excel
+- Overspecify vs underspecify system
+- Display formulas for data points
+- fsolve function
+- fsolve multiple variables
 
--Include instantaneous vs average auto calculated
+- Include instantaneous vs average auto calculated
 
 
 ### Recycle
