@@ -25,7 +25,7 @@ The purpose of this code is to create a mass balance tool capable of giving flow
 
 ## Project Structure
 
-`
+```
 Mass_Balance/                               #Main directory
 │
 ├── core/
@@ -52,7 +52,7 @@ Mass_Balance/                               #Main directory
 ├── requirements.txt                        #environemnt requirements
 ├── README.md
 └── ...
-`
+```
 
 
 
@@ -61,14 +61,14 @@ Mass_Balance/                               #Main directory
 
 ### Miscellaneous
 
--Import data from Excel
--Export data to Excel
--Overspecify vs underspecify system
--Display formulas for data points
--fsolve function
--fsolve multiple variables
+- Import data from Excel
+- Export data to Excel
+- Overspecify vs underspecify system
+- Display formulas for data points
+- fsolve function
+- fsolve multiple variables
 
--Include instantaneous vs average auto calculated
+- Include instantaneous vs average auto calculated
 
 
 ### Recycle
