@@ -76,6 +76,7 @@ Mass_Balance/                               #Main directory
 - Detect a recycle stream
 - Able to detect recycle streams if recycling back to the same node
 - Need to impliment further logic to detect recycle back to previous nodes upstream
+- Function that sets destination for stream and connects nodes
 
 
 

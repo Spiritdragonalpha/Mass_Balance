@@ -4,9 +4,18 @@ from utils import *
 class Node():
     def __init__(self,name):
         self.name = name
-        self.inputs = []
-        self.outputs = []
+        self.inputs = {}
+        self.outputs = {}
 
+    def __getattr__(self, name):
+        if name in self.inputs:
+            return self.inputs[name]
+        if name in self.outputs:
+            return self.outputs[name]
+        raise AttributeError(f"{name} not found in inputs or outputs of {self.name}")
+
+    def get_parameters(self):
+        return {}
 
     def view_node(self,show_all=False):
         draw_line()
@@ -26,8 +35,6 @@ class Node():
                         print(f"  {key}: {value}")
                     else: print(f"  {key}: {value}")
 
-    def get_parameters(self):
-        return {}
 
 
 

@@ -8,6 +8,19 @@ class Plant():
         self.list_recycle_streams = []
         self.solved_nodes = set()
 
+    def __getattr__(self, name):
+        if name in self.nodes:
+            return self.nodes[name]
+        raise AttributeError(f"{name} not found")
+
+
+    def assign_streams(self):
+        for node in self.nodes:
+            for stream in self.streams:
+                if stream.destination == node.name:
+                    node.inputs[stream.name] = stream
+
+
     def solve_plant(self):
         list_recycle_streams = self.check_recycle_streams()
         self.solve_once()
@@ -36,9 +49,10 @@ class Plant():
         for node in self.nodes.values():
             if all(stream is not None and stream.flow is not None for stream in node.inputs.values()):
                 node.solve()
-                #print(f"solve_once: Solved node {node.name}")
+                print(f"solve_once: Solved node {node.name}")
             else:
-                print(f"solve_once: Skipping node {node.name}, inputs not ready")
+                return
+                #print(f"solve_once: Skipping node {node.name}, inputs not ready")
 
     def solve_recycles(self, list_recycle_streams, tolerance=1e-6):
         print(f'solve_recycles: Solving plant with {len(list_recycle_streams)} recycle stream(s)')
@@ -71,6 +85,7 @@ class Plant():
         for node in self.nodes.values():
             node.view_node(show_all)
 
+    
 
     def find_variable(self, var, target, target_value, guess):
         def get_value(path):          #"MF.outputs.filtrate.flow"    MF.avg_flux

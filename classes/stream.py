@@ -5,7 +5,11 @@ class Stream():
         self.composition = {}
         self.source = source
         self.destination = destination
+        self.is_recycle = False
 
+    def connect(self,source,destination):
+        self.source = source
+        self.destination = destination
 
 
 
