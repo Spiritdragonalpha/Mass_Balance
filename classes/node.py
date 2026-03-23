@@ -1,4 +1,3 @@
-from .port import Port
 from utils import *
 
 class Node():
@@ -8,32 +7,23 @@ class Node():
         self.outputs = {}
 
     def __repr__(self):
-        return f"<Node {self.name}>"
+        return f"<Node: {self.name}>"
 
-    def add_input(self,name):
-        port = Port(self,name,'input')
-        setattr(self,name,port)
-        self.inputs[name] = port
-        return port
-
-    def add_output(self,name):
-        port = Port(self,name,'output')
-        setattr(self,name,port)
-        self.outputs[name] = port
-        return port
 
     def get_parameters(self):
         return {}
 
     def view_node(self,show_all=False):
         draw_line()
-        print(f"Node: {self.name}")
+        print(f'Node: {self.name}')
         print("Input Streams:")
         for key, stream in self.inputs.items():
-            print(f"  {key}: {stream.flow} gpm")
+            if stream.flow is not None: print(f"  {key}: {stream.flow} gpm")
+            else: print(f'  {key}:')
         print("Output Streams:")
         for key, stream in self.outputs.items():
-            print(f"  {key}: {stream.flow} gpm")
+            if stream.flow is not None: print(f"  {key}: {stream.flow} gpm")
+            else: print(f'  {key}:')
         if show_all:
             params = self.get_parameters()
             if params:
@@ -41,7 +31,7 @@ class Node():
                 for key, value in params.items():
                     if value:
                         print(f"  {key}: {value}")
-                    else: print(f"  {key}: {value}")
+
 
     
 

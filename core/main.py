@@ -6,16 +6,20 @@ from utils import *
 def Test1():
     plant = Plant('Haile')
    
-    clarifier = plant.add_node(Clarifier('Clarifier1'))
-    mf = plant.add_node(MF('MF1'))
-    ro = plant.add_node(RO('RO1',recovery = .68))
+    clarifier1 = plant.add_node(Clarifier('Clarifier1', wasting_ratio=.25))
+    mf1 = plant.add_node(MF('MF1',xr_percentage=.25))
+    ro1 = plant.add_node(RO('RO1',recovery = .75))
 
-    wtp_feed = Stream('wtp_feed',flow = 640)
+    plant.add_stream('feed', destination=clarifier1)
+    plant.add_stream('sludge', source=clarifier1)
+    plant.add_stream('effluent', source=clarifier1, destination=mf1)
+    plant.add_stream('xr', source=mf1)
+    plant.add_stream('filtrate', source=mf1,destination=ro1)
+    plant.add_stream('permeate', flow=270,source=ro1)
+    plant.add_stream('concentrate',source=ro1)
 
-    connect(wtp_feed,destination_port=clarifier.feed)
-    connect(clarifier.effluent,destination_port=mf.feed)
-    connect(mf.filtrate,destination_port=ro.feed)
 
+    plant.initialize()
     plant.solve_plant()
     plant.view()
 

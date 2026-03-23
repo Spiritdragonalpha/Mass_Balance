@@ -1,11 +1,8 @@
 from classes import Node, Stream
 
 class RO(Node):
-    def __init__(self,name,recovery):
+    def __init__(self,name,recovery=None):
         super().__init__(name)
-        self.add_input('feed')
-        self.add_output('permeate')
-        self.add_output('concentrate')
 
         self.recovery = recovery
 
@@ -19,8 +16,8 @@ class RO(Node):
         permeate = feed*self.recovery
         concentrate = feed-permeate
         
-        self.outputs['permeate'] = permeate
-        self.outputs['concentrate'] = concentrate
+        self.outputs['permeate'].flow = permeate
+        self.outputs['concentrate'].flow = concentrate
 
 
 
